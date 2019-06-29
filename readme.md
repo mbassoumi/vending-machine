@@ -1,3 +1,14 @@
+## Notes
+- To change money storage in the vending machine: go to money table in database and change the amount value.
+- To check your answer make sure you have enough change on the vending machine
+- To check your answer make sure you have enough quantity of the selected snack in the vending machine
+
+## Messages
+- not enough money [when you havn't entered enough money]
+- not enough change [when the vending machine doesn't have enough change]
+- not enough quantity [when the snack is out of stock]
+- have a sweet snack [when every things is ok] 
+
 ## Run Project
 
 - clone it to your local machine
