@@ -1,7 +1,7 @@
 ## Notes
-- To change money storage in the vending machine: go to money table in database and change the amount value.
-- To check your answer make sure you have enough change on the vending machine
-- To check your answer make sure you have enough quantity of the selected snack in the vending machine
+- To change money storage [how much money the vending machine has]: go to [money] table in database and change the amount value for each currency type.
+- To ensure a successful result make sure you have enough change on the vending machine.
+- To ensure a successful the result make sure you have enough quantity of the selected snack in the vending machine.
 
 ## Messages
 - not enough money [when you havn't entered enough money]
