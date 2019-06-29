@@ -28,7 +28,9 @@ class MoneyService implements MoneyInterface
     {
         // TODO: Implement checkEnoughChange() method.
         $centAmount = $change * 100;
-        $centAmount = intval(ceil($centAmount));
+        $centAmount = intval($centAmount);
+        $centAmount = ceil($centAmount);
+        $centAmount = intval($centAmount);
         $allCurrencies = $currencyService->getAllOrderByCentValue();
         $allMoney = $this->getAll();
         $returnedMoney = [];

@@ -68,6 +68,7 @@ class VendingMachineController extends Controller
             return response()->json(['message' => 'not enough quantity'], 400);
         }
         $charge = $this->vendingMachineService->checkEnoughMoney($snack, $attributes);
+
         if (!$charge) {
             return response()->json(['message' => 'not enough money'], 400);
         }

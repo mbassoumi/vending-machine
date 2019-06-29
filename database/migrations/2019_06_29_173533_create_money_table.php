@@ -18,7 +18,6 @@ class CreateMoneyTable extends Migration
             $table->unsignedInteger('currency_id');
             $table->integer('amount')->default(0);
 
-
         });
     }
 
