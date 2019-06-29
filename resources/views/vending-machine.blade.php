@@ -16,17 +16,22 @@
                 @include('display')
             </div>
 
-            <div class="col-sm-12" style="margin: 5px;">
-                <div class="row">
-                    <div class="col-sm-6">
-                        @include('keypad')
-                    </div>
-                    <div class="col-sm-6">
-                        @include('money-slots')
-                    </div>
+            <form method="POST">
+                {{csrf_field()}}
+                {{--                <input type="hidden" name="_token" value="{{ csrf_token() }}">--}}
 
+                <div class="col-sm-12" style="margin: 5px;">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            @include('keypad')
+                        </div>
+                        <div class="col-sm-6">
+                            @include('money-slots')
+                        </div>
+
+                    </div>
                 </div>
-            </div>
+            </form>
             <div class="col-sm-12" style="margin: 5px;">
                 @include('charge-display')
             </div>
@@ -46,11 +51,18 @@
         $(document).ready(function () {
 
 
+
             let coins_input = 0;
             let usd_input = 0;
-            update_display_input_money();
+            let with_card = false;
+            update_display_input_money('-');
             $('.count').prop('disabled', true);
             $(document).on('click', '.plus', function () {
+                with_card = false;
+
+                $('#pay-with-card').attr('disabled', 'disabled');
+
+
                 let amount = $(this).data('amount');
                 let type = $(this).data('type');
                 var affected_id = type + '-' + amount;
@@ -64,27 +76,27 @@
                         coins_input += amount;
                         break;
                 }
-                update_display_input_money();
+                update_display_input_money(usd_input + '$ and ' + coins_input + 'c');
 
             });
 
-            function update_display_input_money() {
-                $('#input-money').html(usd_input + '$ and ' + coins_input + 'c');
+            function update_display_input_money(output) {
+                $('#input-money').html(output);
             }
 
             let item_input = '-';
-            update_display_input_item();
+            update_display_input_item('-');
             $('.num_keypad').attr('disabled', 'disabled');
             $(document).on('click', '.char_keypad', function () {
                 item_input = $(this).data('content');
                 $('.char_keypad').attr('disabled', 'disabled');
                 $('.num_keypad').attr('disabled', false);
-                update_display_input_item()
+                update_display_input_item(item_input)
             });
             $(document).on('click', '.num_keypad', function () {
                 item_input += $(this).data('content');
                 $('.num_keypad').attr('disabled', 'disabled');
-                update_display_input_item()
+                update_display_input_item(item_input)
                 getSnackPrice();
                 $('#pay-and-get-item').attr('disabled', false);
 
@@ -99,68 +111,101 @@
                 $('.char_keypad').attr('disabled', false);
                 $('.num_keypad').attr('disabled', 'disabled');
                 $('#pay-and-get-item').attr('disabled', 'disabled');
-                update_display_input_item();
-                update_display_output_price();
+                update_display_input_item(item_input);
+                update_display_output_price(output_price);
             });
 
             let output_charge = '-';
             $(document).on('click', '#cancel-paying', function () {
-                output_charge = usd_input + '$ and ' + coins_input + 'c';
+                if (usd_input != 0 || coins_input != 0) {
+                    output_charge = usd_input + '$ and ' + coins_input + 'c';
+                } else if (with_card) {
+                    output_charge = "take your card";
+                    with_card = false;
+                } else {
+                    output_charge = '';
+                }
                 usd_input = 0;
                 coins_input = 0;
                 item_input = '-';
                 output_price = '-';
                 $('#pay-and-get-item').attr('disabled', 'disabled');
-                update_display_input_item();
-                update_display_input_money();
-                update_display_output_price();
-                update_output_charge_display();
+                $('#pay-with-card').attr('disabled', false);
+                update_display_input_item(item_input);
+                update_display_input_money('-');
+                update_display_output_price(output_price);
+                update_output_charge_display(output_charge);
             });
 
-            function update_output_charge_display() {
-                $('#charge-display').html(output_charge);
+            $(document).on('click', '#pay-and-get-item', function (e) {
+
+                e.preventDefault();
+                $.ajax({
+                    method: "POST",
+                    url: "/snacks/buy",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        code: item_input,
+                        with_card: with_card,
+                        usd_input: usd_input,
+                        coins_input: coins_input,
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        $('#pay-and-get-item').attr('disabled', 'disabled');
+                        $('#pay-with-card').attr('disabled', false);
+                        update_output_charge_display(data.charge);
+                        update_display_input_item('-');
+                        update_display_input_money('-');
+                        update_display_output_price('-');
+                        $('.char_keypad').attr('disabled', false);
+                        with_card = false;
+                    },
+                    error: function (response) {
+                        $('#display-notes').html(response.responseJSON.message);
+                    }
+                });
+            });
+
+            $(document).on('click', '#pay-with-card', function () {
+                with_card = true;
+                usd_input = 0;
+                coins_input = 0;
+                $('#input-money').html('card is inserted');
+
+            });
+
+            function update_output_charge_display(output) {
+                $('#charge-display').html(output);
             }
 
 
-            function update_display_input_item() {
-                $('#input-item').html(item_input);
+            function update_display_input_item(output) {
+                $('#input-item').html(output);
             }
 
             let output_price = '-';
-            update_display_output_price();
-            function update_display_output_price() {
-                $('#output-price').html(output_price + "$");
+            update_display_output_price(output_price);
+
+            function update_display_output_price(output) {
+                $('#output-price').html(output);
             }
 
             function getSnackPrice() {
                 $.ajax({
                     method: "GET",
-                    url: "/snacks/"+item_input+"/price",
+                    url: "/snacks/" + item_input + "/price",
                     dataType: 'json',
-                    success: function(data) {
-
+                    success: function (data) {
                         output_price = data.price;
-                        update_display_output_price();
-                        // submitBtn.button('reset');
-                        // if (data.result === 'success') {
-                        //     deleteLogModal.modal('hide');
-                        //     location.reload();
-                        // }
-                        // else {
-                        //     alert('AJAX ERROR ! Check the console !');
-                        //     console.error(data);
-                        // }
+                        update_display_output_price(output_price);
                     },
-                    error: function(xhr, textStatus, errorThrown) {
+                    error: function (xhr, textStatus, errorThrown) {
                         alert('AJAX ERROR ! Check the console !');
                         console.error(errorThrown);
-                        // submitBtn.button('reset');
                     }
                 });
             }
-
-
-
 
 
         });

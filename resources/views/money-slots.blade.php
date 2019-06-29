@@ -4,12 +4,21 @@
         <hr>
         @foreach($money as $moneyObject)
             <div class="qty">
-                <label style="font-size: 20px; width: 50%"><b>{!! "$moneyObject->amount $moneyObject->symbol" !!} </b></label>
-                <input hidden type="number" id="{{"$type-$moneyObject->amount"}}" class="count" name="{{$type}}[{{$moneyObject->amount}}]"
+                <label
+                    style="font-size: 20px; width: 50%"><b>{!! "$moneyObject->amount $moneyObject->symbol" !!} </b></label>
+                <input hidden type="number" id="{{"$type-$moneyObject->amount"}}" class="count"
+                       name="{{$type}}[{{$moneyObject->amount}}]"
                        value="0">
-                <span data-type="{{$type}}" data-symbol="{!! $moneyObject->symbol !!}" data-amount="{{$moneyObject->amount}}"
+                <span data-type="{{$type}}" data-symbol="{!! $moneyObject->symbol !!}"
+                      data-amount="{{$moneyObject->amount}}"
                       class="plus bg-dark">+</span>
             </div>
         @endforeach
     @endif
 @endforeach
+<hr>
+<div class="qty">
+    <input hidden type="number" id="{{"$type-$moneyObject->amount"}}" class="count" name="card"
+           value="1">
+    <button id="pay-with-card" type="button" class="btn btn-success">Pay with card</button>
+</div>

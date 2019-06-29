@@ -21,5 +21,10 @@
                 12
             </cite>
         </footer>
+        <footer class="blockquote-footer">
+            <cite id="display-notes" title="Source Title">
+
+            </cite>
+        </footer>
     </div>
 </div>

@@ -47,4 +47,25 @@ class VendingMachineController extends Controller
         $snack = $this->snackService->getSnackDetailsByColumnRow($column, $row);
         return response()->json(['price' => $snack->price]);
     }
+
+    public function buySnack(Request $request)
+    {
+        $attributes = $request->only([
+            'code', 'with_card', 'usd_input', 'coins_input'
+        ]);
+        $code = $attributes['code'];
+        $codeArray = str_split($code, 1);
+        $row = current($codeArray);
+        $column = next($codeArray);
+        $snack = $this->snackService->getSnackDetailsByColumnRow($column, $row);
+        $hasQuantity = $this->snackService->checkSnackQuantity($snack);
+        if (!$hasQuantity){
+            return response()->json(['message' => 'not enough quantity'], 400);
+        }
+        $isEnoughMoney = $this->vendingMachineService->checkEnoughMoney($snack, $attributes);
+        if (!$isEnoughMoney){
+            return response()->json(['message' => 'not enough money'], 400);
+        }
+        return response()->json(['message' => 'have a sweet snack', 'charge' => $isEnoughMoney], 200);
+    }
 }

@@ -15,6 +15,7 @@ Route::get('/vending-machine', 'VendingMachineController@vendingMachine');
 //Route::get('/vending-machine/{code}', 'VendingMachineController@getSnackPrice');
 
 Route::get('/snacks/{code}/price', 'VendingMachineController@getSnackPrice');
+Route::post('/snacks/buy', 'VendingMachineController@buySnack');
 
 
 
