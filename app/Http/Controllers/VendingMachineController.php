@@ -71,18 +71,21 @@ class VendingMachineController extends Controller
         if (!$charge) {
             return response()->json(['message' => 'not enough money'], 400);
         }
-        if ($attributes['with_card'] == "false") {
+
+        if ($attributes['with_card'] === "false" or $attributes['with_card'] == false) {
             $charge = $this->moneyService->checkEnoughChange($charge, $this->currencyService);
             if ($charge){
                 $this->moneyService->updateArray($attributes['money']);
             }
         }
 
+
         if ($charge) {
             $this->snackService->updateSnackQuantity($snack, -1);
             $message = 'have a sweet snack';
         }else{
             $message = 'not enough change';
+            return response()->json(['message' => $message], 400);
         }
         $snack = $snack->fresh();
         return response()->json(['message' => $message, 'charge' => $charge, 'snack_quantity_id' => $snack->id, 'snack_quantity' => $snack->quantity], 200);

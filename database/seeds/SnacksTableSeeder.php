@@ -23,15 +23,16 @@ class SnacksTableSeeder extends Seeder
         }
 
         $snacks = [];
-        $faker = Faker\Factory::create('en_US');
 
-        foreach ($codes as $code){
+        $price = 10;
+        $quantity = 0;
+        foreach ($codes as $key => $code){
             $snacks[] = [
-                'name' => $faker->realText(10),
+                'name' => "snack ". ($key+1),
                 'column' => $code['column'],
                 'row' => $code['row'],
-                'quantity' => rand(0, 10),
-                'price' => rand(1,70)
+                'quantity' => $quantity++,
+                'price' => $price++,
             ];
         }
 
