@@ -13,5 +13,6 @@ class DatabaseSeeder extends Seeder
     {
          $this->call(MoneyTableSeeder::class);
          $this->call(SnacksTableSeeder::class);
+         $this->call(CurrencyTableSeeder::class);
     }
 }

@@ -12,39 +12,14 @@ class MoneyTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('money')->insert([
-            [
-                'type' => 'coin',
-                'amount' => 10,
-                'symbol' => 'c'
-            ],
-            [
-                'type' => 'coin',
-                'amount' => 20,
-                'symbol' => 'c'
-            ],
-            [
-                'type' => 'coin',
-                'amount' => 50,
-                'symbol' => 'c'
-            ],
-            [
-                'type' => 'coin',
-                'amount' => 1,
-                'symbol' => '$'
-            ],
-            [
-                'type' => 'note',
-                'amount' => 20,
-                'symbol' => '$'
-            ],
-            [
-                'type' => 'note',
-                'amount' => 50,
-                'symbol' => '$'
-            ],
 
-
-        ]);
+        $moneyData = [];
+        for ($i = 1; $i<=6; $i++){
+            $moneyData[] = [
+                'currency_id' => $i,
+                'amount' => 5,
+            ];
+        }
+        DB::table('money')->insert($moneyData);
     }
 }

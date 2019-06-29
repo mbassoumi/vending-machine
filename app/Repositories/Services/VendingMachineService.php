@@ -29,7 +29,9 @@ class VendingMachineService implements VendingMachineInterface
         $inputMoneyResult = $newUsd . ".".$newCents;
 
         if (doubleval($inputMoneyResult) > $snackPrice){
-            return (doubleval($inputMoneyResult) - $snackPrice) . "$";
+            return (doubleval($inputMoneyResult) - $snackPrice);
+        }else if (doubleval($inputMoneyResult) == $snackPrice){
+            return true;
         }
         return false;
 

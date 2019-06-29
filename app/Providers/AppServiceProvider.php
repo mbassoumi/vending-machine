@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Repositories\CurrencyInterface;
 use App\Repositories\MoneyInterface;
+use App\Repositories\Services\CurrencyService;
 use App\Repositories\Services\MoneyService;
 use App\Repositories\Services\SnackService;
 use App\Repositories\Services\VendingMachineService;
@@ -31,6 +33,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             VendingMachineInterface::class,
             VendingMachineService::class
+        );
+        $this->app->bind(
+            CurrencyInterface::class,
+            CurrencyService::class
         );
     }
 

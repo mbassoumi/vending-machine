@@ -15,9 +15,10 @@ class CreateMoneyTable extends Migration
     {
         Schema::create('money', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->enum('type', ['coin', 'note'])->default('coin');
-            $table->integer('amount');
-            $table->enum('symbol', ['$', 'c'])->default('c');
+            $table->unsignedInteger('currency_id');
+            $table->integer('amount')->default(0);
+
+
         });
     }
 

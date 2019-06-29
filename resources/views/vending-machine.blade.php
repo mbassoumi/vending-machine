@@ -16,7 +16,7 @@
                 @include('display')
             </div>
 
-            <form method="POST">
+            <form method="POST" id="form">
                 {{csrf_field()}}
                 {{--                <input type="hidden" name="_token" value="{{ csrf_token() }}">--}}
 
@@ -51,18 +51,25 @@
         $(document).ready(function () {
 
 
-
             let coins_input = 0;
             let usd_input = 0;
             let with_card = false;
+            let money = {};
             update_display_input_money('-');
             $('.count').prop('disabled', true);
             $(document).on('click', '.plus', function () {
+
                 with_card = false;
 
                 $('#pay-with-card').attr('disabled', 'disabled');
 
+                if (money[$(this).data('id')]) {
+                    money[$(this).data('id')] += 1;
+                } else {
+                    money[$(this).data('id')] = 1;
+                }
 
+                console.log(money)
                 let amount = $(this).data('amount');
                 let type = $(this).data('type');
                 var affected_id = type + '-' + amount;
@@ -107,6 +114,7 @@
             $('#pay-and-get-item').attr('disabled', 'disabled');
 
             $(document).on('click', '#clear_keypad', function () {
+                money =[];
                 item_input = '-';
                 output_price = '-'
                 $('.char_keypad').attr('disabled', false);
@@ -119,6 +127,7 @@
 
             let output_charge = '-';
             $(document).on('click', '#cancel-paying', function () {
+                money =[];
                 if (usd_input != 0 || coins_input != 0) {
                     output_charge = usd_input + '$ and ' + coins_input + 'c';
                 } else if (with_card) {
@@ -153,6 +162,7 @@
                         with_card: with_card,
                         usd_input: usd_input,
                         coins_input: coins_input,
+                        money: money
                     },
                     dataType: 'json',
                     success: function (data) {
@@ -162,6 +172,8 @@
                         update_display_input_item('-');
                         update_display_input_money('-');
                         update_display_output_price('-');
+                        update_notes_display(data.message);
+                        money =[];
                         $('.char_keypad').attr('disabled', false);
                         with_card = false;
                         update_snack_quantity(data.snack_quantity_id, data.snack_quantity);
@@ -172,8 +184,8 @@
                 });
             });
 
-            function update_snack_quantity(id, value){
-                $('#quantity_'+id).html(value)
+            function update_snack_quantity(id, value) {
+                $('#quantity_' + id).html(value)
             }
 
             $(document).on('click', '#pay-with-card', function () {
@@ -188,6 +200,7 @@
             function update_output_charge_display(output) {
                 $('#charge-display').html(output);
             }
+
             function update_notes_display(output) {
                 $('#display-notes').html(output);
             }
