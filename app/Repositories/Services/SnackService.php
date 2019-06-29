@@ -34,4 +34,12 @@ class SnackService implements SnackInterface
         // TODO: Implement checkSnackQuantity() method.
         return ($snack->quantity > 0);
     }
+
+    public function updateSnackQuantity($snack, $quantity)
+    {
+        // TODO: Implement updateSnackQuantity() method.
+        $snack->quantity +=$quantity;
+        $snack->save();
+
+    }
 }

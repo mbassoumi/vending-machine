@@ -15,7 +15,7 @@
                             <div class="card-body">
                                 <footer class="blockquote-footer">
                                     Quantity:
-                                    <cite title="Source Title">
+                                    <cite id="quantity_{{$snack->id}}" title="Source Title">
                                         {!! $snack->quantity !!}
                                     </cite>
                                 </footer>

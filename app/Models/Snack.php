@@ -8,4 +8,5 @@ class Snack extends Model
 {
     //
     protected $table = 'snacks';
+    public $timestamps = false;
 }

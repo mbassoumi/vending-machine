@@ -20,48 +20,5 @@ Route::post('/snacks/buy', 'VendingMachineController@buySnack');
 
 
 Route::get('/', function () {
-    $monies = [
-        'coin' => [
-            1 => '$',
-            10 => 'c',
-            20 => 'c',
-            50 => 'c',
-        ],
-        'note' => [
-            20 => '$',
-            50 => '$'
-        ],
-        'card' => [
-
-        ]
-    ];
-
-
-    $snacksData = \App\Models\Snack::get();
-
-    $snacks = [];
-    foreach ($snacksData as $snack){
-        $snacks[$snack->row][] = $snack;
-    }
-
-    return view('vending-machine', compact(['monies', 'snacks']));
+    return redirect('/vending-machine');
 });
-
-
-
-
-/*
-
-vending machine display
-
-$data = [];
-    $rows = ['A', 'B', 'C', 'D', 'E'];
-    $columns = [1, 2, 3, 4, 5];
-    foreach ($rows as $key => $row) {
-        $rowData = [];
-        foreach ($columns as $column) {
-            $rowData[] = $row . ' ' . $column;
-        }
-        $data[$key] = $rowData;
-    }
- */

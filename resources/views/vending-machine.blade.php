@@ -92,6 +92,7 @@
                 $('.char_keypad').attr('disabled', 'disabled');
                 $('.num_keypad').attr('disabled', false);
                 update_display_input_item(item_input)
+                update_notes_display('-');
             });
             $(document).on('click', '.num_keypad', function () {
                 item_input += $(this).data('content');
@@ -113,6 +114,7 @@
                 $('#pay-and-get-item').attr('disabled', 'disabled');
                 update_display_input_item(item_input);
                 update_display_output_price(output_price);
+                update_notes_display('-');
             });
 
             let output_charge = '-';
@@ -131,10 +133,12 @@
                 output_price = '-';
                 $('#pay-and-get-item').attr('disabled', 'disabled');
                 $('#pay-with-card').attr('disabled', false);
+                $('.char_keypad').attr('disabled', false);
                 update_display_input_item(item_input);
                 update_display_input_money('-');
                 update_display_output_price(output_price);
                 update_output_charge_display(output_charge);
+                update_notes_display('-');
             });
 
             $(document).on('click', '#pay-and-get-item', function (e) {
@@ -160,23 +164,32 @@
                         update_display_output_price('-');
                         $('.char_keypad').attr('disabled', false);
                         with_card = false;
+                        update_snack_quantity(data.snack_quantity_id, data.snack_quantity);
                     },
                     error: function (response) {
-                        $('#display-notes').html(response.responseJSON.message);
+                        update_notes_display(response.responseJSON.message);
                     }
                 });
             });
+
+            function update_snack_quantity(id, value){
+                $('#quantity_'+id).html(value)
+            }
 
             $(document).on('click', '#pay-with-card', function () {
                 with_card = true;
                 usd_input = 0;
                 coins_input = 0;
                 $('#input-money').html('card is inserted');
+                update_notes_display('-');
 
             });
 
             function update_output_charge_display(output) {
                 $('#charge-display').html(output);
+            }
+            function update_notes_display(output) {
+                $('#display-notes').html(output);
             }
 
 
