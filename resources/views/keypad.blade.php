@@ -33,12 +33,12 @@
         </div>
          <div class="row">
             <div class="col-sm-12">
-                <button style="width: 100% ; margin: 5px" type="button" class="btn btn-info">Get</button>
+                <button id="pay-and-get-item" style="width: 100% ; margin: 5px" type="button" class="btn btn-info">Get</button>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <button style="width: 100% ; margin: 5px" type="button" class="btn btn-info">cancel</button>
+                <button id="cancel-paying" style="width: 100% ; margin: 5px" type="button" class="btn btn-info">cancel</button>
             </div>
         </div>
 

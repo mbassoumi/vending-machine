@@ -27,6 +27,9 @@
 
                 </div>
             </div>
+            <div class="col-sm-12" style="margin: 5px;">
+                @include('charge-display')
+            </div>
         </div>
     </div>
 
@@ -83,16 +86,41 @@
                 $('.num_keypad').attr('disabled', 'disabled');
                 update_display_input_item()
                 getSnackPrice();
+                $('#pay-and-get-item').attr('disabled', false);
+
                 // update_display_output_price()
             });
+
+            $('#pay-and-get-item').attr('disabled', 'disabled');
+
             $(document).on('click', '#clear_keypad', function () {
                 item_input = '-';
                 output_price = '-'
                 $('.char_keypad').attr('disabled', false);
                 $('.num_keypad').attr('disabled', 'disabled');
+                $('#pay-and-get-item').attr('disabled', 'disabled');
                 update_display_input_item();
                 update_display_output_price();
             });
+
+            let output_charge = '-';
+            $(document).on('click', '#cancel-paying', function () {
+                output_charge = usd_input + '$ and ' + coins_input + 'c';
+                usd_input = 0;
+                coins_input = 0;
+                item_input = '-';
+                output_price = '-';
+                $('#pay-and-get-item').attr('disabled', 'disabled');
+                update_display_input_item();
+                update_display_input_money();
+                update_display_output_price();
+                update_output_charge_display();
+            });
+
+            function update_output_charge_display() {
+                $('#charge-display').html(output_charge);
+            }
+
 
             function update_display_input_item() {
                 $('#input-item').html(item_input);
