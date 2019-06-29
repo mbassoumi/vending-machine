@@ -43,5 +43,6 @@ vendor/bin/phpunit
 ```
 
 
-![UML](https://raw.githubusercontent.com/mbassoumi/vending-machine/master/uml.png) 
 ![Project View](https://raw.githubusercontent.com/mbassoumi/vending-machine/master/vm.png) 
+
+![UML](https://raw.githubusercontent.com/mbassoumi/vending-machine/master/uml.png) 
